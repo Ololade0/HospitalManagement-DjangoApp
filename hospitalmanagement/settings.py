@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'hospital',
 
+
     
 ]
 INSTALLED_APPS += [     'widget_tweaks', ]
