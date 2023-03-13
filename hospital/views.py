@@ -161,4 +161,34 @@ def update_doctor_view(request, pk):
 
 
 
+def admin_add_doctor_view(request):
+     userForm = forms.DoctorUserForm()
+     doctorForm = forms.DoctorForm()
+     mydict = {'userForm' : userForm, 'doctorForm' : doctorForm}
+     if request.method == 'POST':
+         userForm = forms.DoctorUserForm(request.POST)
+         doctorForm = forms.DoctorForm(request.POST, request.FILES)
+         if userForm.is_valid() and DoctorForm.is_valid():
+             user  = userForm.save()
+             user.set_password(user.password)
+             user.save()
+
+             doctor = doctorForm.save(commit=False)
+             doctor.user = user
+             doctor.status = True
+             doctor.save()
+
+
+             my_doctor_group = Group.objects.get_or_create(name='DOCTOR')
+             my_doctor_group[0].user_set.add(user)
+
+         return HttpResponseRedirect('admin-view-doctor')
+     return render(request, 'hospital/admin_add_doctor.html', context=mydict)
+
+
+
+
+
+
+
 
